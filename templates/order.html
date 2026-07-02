@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugar Bliss-طلبات العميل</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stye.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='all.css') }}">
+</head>
+<body>
+
+    <!-- شريط التنقل -->
+    <nav class="navbar fixed-top navbar-expand-lg  "  style="background-color: #d96ba0;" data-bs-theme="dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+   <img src="{{ url_for('static', filename='images/لوقو3.jpg') }}" class="rounded-5" width="70" height="70" alt="">
+
+
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarSupportedContent"> 
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+         <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">الرئيسية</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('hht_page') }}">من نحن</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('mine_page') }}"> المنتجات </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('order_page') }}">طلبات العملاء </a>
+        </li>
+        
+      </ul>
+    </div>
+
+</a>
+  </div>
+</nav>
+
+    <section id="products" class=" mt-5 p-5">
+  <div class="d-flex justify-content-center">
+    <h2 class="text-header pb-2">طلبات العملاء</h2>
+  </div>
+          <form action="{{ url_for('submit_order_action') }}" method="post" id="orderForm" name="orderForm">
+            <fieldset>
+                <legend>معلومات العميل</legend>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">الاسم الكامل <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">رقم الهاتف <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{10}" placeholder="05XXXXXXXX">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">البريد الإلكتروني<span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" required placeholder="example@email.com">
+                    </div>
+                     <div class="col-md-6">
+                <label for="address" class="form-label">العنوان <span class="text-danger">*</span> </label>
+              <input type="text" class="form-control" id="address" name="address" required>
+
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>تفاصيل الطلب</legend>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="product" class="form-label">اختر المنتج <span class="text-danger">*</span></label>
+                        <input class="form-control" list="productOptions" id="product" name="product" placeholder="اكتب أو اختر من القائمة" required>
+                        <datalist id="productOptions">
+                            <option value="كرانشي كراميل - 14 ريال">
+                            <option value="بير بلو - 16 ريال">
+                            <option value="بلو بيري دريم - 14 ريال">
+                            <option value="دولتشي شوكلت - 12 ريال">
+                            <option value="كعكة التوت والكرز المكرمل - 30 ريال">
+                            <option value="كيك قراندي لافندر - 50 ريال">
+                            <option value="رانشي تشوكلت - 50 ريال">
+                            <option value="ريد بيري كيك - 45 ريال">
+                            <option value="بودينغ التشوكلت - 14 ريال">
+                            <option value="بودينغ التوت - 18 ريال">
+                            <option value="بودينغ بلو بيري - 12 ريال">
+                            <option value="بودينغ الكارميل - 15 ريال">
+                        </datalist>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="quantity" class="form-label">الكمية <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" required>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="sweetness-container">
+                            <span class="sweetness-label">مستوى الحلاوة (1-5)</span>
+                            <input type="range" class="form-range" id="sweetness" name="sweetness" min="1" max="5" value="3">
+                            <div class="d-flex justify-content-between mt-2">
+                                <small>قليل</small>
+                                <small>متوسط</small>
+                                <small>كثير</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <p class="mb-2">إضافات:</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="extras" value="كريمة" id="cream">
+                            <label class="form-check-label" for="cream">
+                                كريمة إضافية
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="extras" value="شوكولاتة" id="chocolate">
+                            <label class="form-check-label" for="chocolate">
+                                صوص شوكولاتة
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="extras" value="مكسرات" id="nuts">
+                            <label class="form-check-label" for="nuts">
+                                مكسرات إضافية
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>خيارات التوصيل</legend>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deliveryType" id="delivery" value="delivery" checked>
+                            <label class="form-check-label fw-bold" for="delivery">
+                                التوصيل إلى العنوان (+10 ريال)
+                            </label>
+                        </div>
+                        <p class="text-muted mt-2 mb-0">سيتم توصيل طلبك إلى العنوان المحدد</p>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deliveryType" id="pickup" value="pickup">
+                            <label class="form-check-label fw-bold" for="pickup">
+                                الاستلام من المتجر
+                            </label>
+                        </div>
+                        <p class="text-muted mt-2 mb-0">يمكنك استلام طلبك من فرعنا الرئيسي</p>
+                    </div>
+                </div>
+                
+                <div id="pickupDetails" class="mt-4" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="pickupDate" class="form-label">تاريخ الاستلام</label>
+                            <input type="date" class="form-control" id="pickupDate" name="pickupDate" >
+                        </div>
+                        <div class="col-md-6">
+                            <label for="pickupTime" class="form-label">وقت الاستلام</label>
+                            <input type="time" class="form-control" id="pickupTime" name="pickupTime">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!--محذوف خليته كومنت-->
+            <!--<div class="text-center mt-4">
+                <button type="button" class="btn btn-primary" onclick="calculateTotal()">حساب السعر</button>
+                <button type="button" class="btn btn-primary" onclick="submitOrder()">إرسال الطلب</button>
+            </div>-->
+
+            <div class="text-center mt-4">
+                 <button type="submit" class="btn btn-primary">إرسال الطلب</button>
+         </div>
+            
+            <div class="text-center mt-3">
+                <p id="orderTotal" class="pink fw-bold"></p>
+            </div>
+        </form>
+    </div>
+    </section>
+<!-- لسبب الرئيسي لحذف هذا الكود هو تحويل منطق معالجة الطلب من الواجهة الأمامية (Frontend) إلى الواجهة الخلفية (Backend) باستخدام Flask هذا الكود المحذوف خليته كومنت-->
+    <!-- نموذج تأكيد الطلب -->
+    <!--<div class="modal fade" id="orderConfirmation" tabindex="-1" aria-labelledby="orderConfirmationLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderConfirmationLabel">تم تأكيد طلبك</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    <h4 class="text-center mb-3" style="color:rgb(213, 100, 130);">شكراً <span id="confirmName"></span>!</h4>
+                    <p class="text-center" style="color:rgb(207, 110, 142);">تم استلام طلبك بنجاح وسيتم تجهيزه قريباً.</p>
+                    
+                    <div class="mt-4">
+                        <h6>تفاصيل الطلب:</h6>
+                        <div id="orderDetails" class="mb-3"></div>
+                        <div class="d-flex justify-content-between">
+                            <span>المجموع الكلي:</span>
+                            <span id="confirmTotal" class="fw-bold pink"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4" id="deliveryInfo"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">موافق</button>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='all.js') }}"></script>
+    <script>
+
+        // [تم الحذف]: حذف كامل لكود JavaScript الخاص بالأسعار، calculateTotal، و submitOrder
+ 
+       // الكود المتبقي (الذي يتحكم في إظهار/إخفاء حقول الاستلام فقط)
+        // تعيين تاريخ اليوم كأقل تاريخ للاستلام
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('pickupDate').min = today;
+
+        // التحكم في إظهار/إخفاء حقول الاستلام من المتجر
+document.querySelectorAll('input[name="deliveryType"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const pickupDetails = document.getElementById('pickupDetails');
+        if (this.value === 'pickup') {
+            pickupDetails.style.display = 'block';
+        } else {
+            pickupDetails.style.display = 'none';
+        }
+    });
+});
+
+// تهيئة الحالة الأولية عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    const pickupRadio = document.getElementById('pickup');
+    const pickupDetails = document.getElementById('pickupDetails');
+    
+    if (pickupRadio.checked) {
+        pickupDetails.style.display = 'block';
+    } else {
+        pickupDetails.style.display = 'none';
+    }
+});
+        // أسعار المنتجات
+       /*
+        const productPrices = {
+            "كرانشي كراميل - 14 ريال": 14,
+            "بير بلو - 16 ريال": 16,
+            "بلو بيري دريم - 14 ريال": 14,
+            "دولتشي شوكلت - 12 ريال": 12,
+            "كعكة التوت والكرز المكرمل - 30 ريال": 30,
+            "كيك قراندي لافندر - 50 ريال": 50,
+            "رانشي تشوكلت - 50 ريال": 50,
+            "ريد بيري كيك - 45 ريال": 45,
+            "بودينغ التشوكلت - 14 ريال": 14,
+            "بودينغ التوت - 18 ريال": 18,
+            "بودينغ بلو بيري - 12 ريال": 12,
+            "بودينغ الكارميل - 15 ريال": 15
+        };
+    
+
+        function calculateTotal() {
+            const productInput = document.getElementById('product').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const deliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
+            
+            if (!productInput) {
+                alert("يرجى اختيار منتج من القائمة");
+                return;
+            }
+            
+            const productPrice = productPrices[productInput] || 0;
+            
+            if (productPrice === 0) {
+                alert("المنتج المختار غير صحيح");
+                return;
+            }
+            
+            let total = productPrice * quantity;
+            
+            // إضافة رسوم التوصيل
+            if (deliveryType === 'delivery') {
+                total += 10;
+            }
+            
+            // خصم للكميات الكبيرة
+            if (quantity >= 5) {
+                total = total * 0.9;
+            }
+            
+            document.getElementById('orderTotal').innerText = "المجموع الكلي: " + total.toFixed(2) + " ريال";
+        }
+        
+        function submitOrder() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const productInput = document.getElementById('product').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            if (!name || !phone) {
+                alert("يرجى ملء جميع الحقول المطلوبة");
+                return;
+            }
+            
+            if (!productInput) {
+                alert("يرجى اختيار منتج من القائمة");
+                return;
+            }
+            
+            const productPrice = productPrices[productInput] || 0;
+            
+            if (productPrice === 0) {
+                alert("المنتج المختار غير صحيح");
+                return;
+            }
+            
+            // حساب السعر النهائي
+            const deliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
+            let total = productPrice * quantity;
+            
+            if (deliveryType === 'delivery') {
+                total += 10;
+            }
+            
+            if (quantity >= 5) {
+                total = total * 0.9;
+            }
+            
+            // جمع بيانات التوصيل
+            const address = document.getElementById('address').value;
+            let deliveryInfo = '';
+            
+            if (deliveryType === 'delivery') {
+                if (!address) {
+                    alert('يرجى إدخال العنوان للتوصيل');
+                    return;
+                }
+                deliveryInfo = `سيتم التوصيل إلى: ${address}`;
+            } else {
+                const pickupDate = document.getElementById('pickupDate').value;
+                const pickupTime = document.getElementById('pickupTime').value;
+                
+                if (!pickupDate || !pickupTime) {
+                    alert('يرجى تحديد تاريخ ووقت الاستلام');
+                    return;
+                }
+                
+                deliveryInfo = `الاستلام من المتجر<br>التاريخ: ${pickupDate}<br>الوقت: ${pickupTime}`;
+            }
+            
+            // عرض تفاصيل الطلب في النافذة المنبثقة
+            document.getElementById('confirmName').textContent = name;
+            document.getElementById('confirmTotal').textContent = total.toFixed(2) + " ريال";
+            
+            let orderDetailsHTML = `
+                <div>${productInput.split(' - ')[0]} - ${quantity} × ${productPrice} ريال = ${productPrice * quantity} ريال</div>
+            `;
+            
+            // إضافة الإضافات المختارة
+            const extras = document.querySelectorAll('input[name="extras"]:checked');
+            if (extras.length > 0) {
+                orderDetailsHTML += '<div>الإضافات: ';
+                extras.forEach((extra, index) => {
+                    orderDetailsHTML += extra.value;
+                    if (index < extras.length - 1) orderDetailsHTML += '، ';
+                });
+                orderDetailsHTML += '</div>';
+            }
+            
+            // إضافة مستوى الحلاوة
+            const sweetness = document.getElementById('sweetness').value;
+            orderDetailsHTML += `<div>مستوى الحلاوة: ${sweetness}/5</div>`;
+            
+          
+            
+            document.getElementById('orderDetails').innerHTML = orderDetailsHTML;
+            document.getElementById('deliveryInfo').innerHTML = deliveryInfo;
+            
+            // عرض نافذة التأكيد
+            const orderConfirmationModal = new bootstrap.Modal(document.getElementById('orderConfirmation'));
+            orderConfirmationModal.show();
+        }*/
+
+    </script>
+   <!-- Footer -->
+<footer class="footer mt-5 py-3" style="background-color: #d96ba0; color: white;">
+  <div class="container">
+    <div class="row text-center">
+
+      <div class="col-md-4 mb-2">
+        <h6 class="mb-1">متجر الحلويات اللذيذة</h6>
+        <small>أشهى الحلويات بأجود المكونات</small>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <a href="mailto:cake@email.com" style="color:white;">cake@email.com</a>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <small>© 2023 متجر الحلويات. جميع الحقوق محفوظة</small>
+      </div>
+
+    </div>
+  </div>
+</footer>
+</body>
+
+</html>
